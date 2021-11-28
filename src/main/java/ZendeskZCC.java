@@ -5,18 +5,19 @@ import org.json.JSONObject;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Properties;
 import java.util.Scanner;
+
 
 public class ZendeskZCC {
 
-    //todo: move to common place
-    static String username = "sachin.malepati@gmail.com";
-    static String token = "r8E9wvEXLdlaMQIJ1arMjo0oijjByUpG2qnBSkNh";
+    private static Properties PROPERTIES;
 
     static String initURl = "https://zccsachin.zendesk.com/api/v2/tickets.json?per_page=25";
     static String ticketURl = "https://zccsachin.zendesk.com/api/v2/tickets/";
@@ -36,7 +37,7 @@ public class ZendeskZCC {
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-            String encoded = Base64.getEncoder().encodeToString((username+"/token:"+token).getBytes(StandardCharsets.UTF_8));
+            String encoded = Base64.getEncoder().encodeToString((PROPERTIES.getProperty("USERNAME")+"/token:"+PROPERTIES.getProperty("API_TOKEN")).getBytes(StandardCharsets.UTF_8));
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
@@ -70,7 +71,7 @@ public class ZendeskZCC {
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-        String encoded = Base64.getEncoder().encodeToString((username+"/token:"+token).getBytes(StandardCharsets.UTF_8));
+        String encoded = Base64.getEncoder().encodeToString((PROPERTIES.getProperty("USERNAME")+"/token:"+PROPERTIES.getProperty("API_TOKEN")).getBytes(StandardCharsets.UTF_8));
         connection.setRequestProperty("Authorization", "Basic " + encoded);
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
@@ -122,7 +123,16 @@ public class ZendeskZCC {
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to Zendesk Ticket Viewer!\n");
 
+        PROPERTIES = new Properties();
+        final URL props = ClassLoader.getSystemResource("creds.properties");
+        try {
+            PROPERTIES.load(props.openStream());
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
         while (true){
+
             System.out.println("\nEnter 1 for all tickets");
             System.out.println("Enter 2 for previous page");
             System.out.println("Enter 3 for next page");

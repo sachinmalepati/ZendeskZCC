@@ -18,7 +18,7 @@ public class ZendeskZCC {
     static String username = "sachin.malepati@gmail.com";
     static String token = "r8E9wvEXLdlaMQIJ1arMjo0oijjByUpG2qnBSkNh";
 
-    static String initURl = "https://zccsachin.zendesk.com/api/v2/tickets.json?per_page=2";
+    static String initURl = "https://zccsachin.zendesk.com/api/v2/tickets.json?per_page=25";
     static String ticketURl = "https://zccsachin.zendesk.com/api/v2/tickets/";
     static String next_page = "";
     static String previous_page = "";
@@ -31,17 +31,17 @@ public class ZendeskZCC {
     }
 
     static TicketsWrapper getTickets(String link) throws Exception {
-        URL url = new URL(link);
-
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-
-        String encoded = Base64.getEncoder().encodeToString((username+"/token:"+token).getBytes(StandardCharsets.UTF_8));
-        connection.setRequestProperty("Authorization", "Basic " + encoded);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestMethod("GET");
-
         try {
+            URL url = new URL(link);
+
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+            String encoded = Base64.getEncoder().encodeToString((username+"/token:"+token).getBytes(StandardCharsets.UTF_8));
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestMethod("GET");
+
             //Getting the response code
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String output;
@@ -60,9 +60,9 @@ public class ZendeskZCC {
             return ticketsWrapper;
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return null;
         }
-        return null;
+
     }
 
     static Ticket getTicketDetails(Integer ticketID) throws Exception {
@@ -96,7 +96,7 @@ public class ZendeskZCC {
         } catch (FileNotFoundException e) {
             System.out.println("Invalid ticket number!");
         }catch (Exception e) {
-            System.out.println(e.getMessage());
+            return null;
         }
         return null;
     }

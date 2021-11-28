@@ -17,7 +17,7 @@ public class ZendeskZCC {
     static String token = "r8E9wvEXLdlaMQIJ1arMjo0oijjByUpG2qnBSkNh";
 
     static void getTickets() throws Exception {
-        URL url = new URL("https://zccsachin.zendesk.com/api/v2/tickets.json");
+        URL url = new URL("https://zccsachin.zendesk.com/api/v2/tickets.json?per_page=2");
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 

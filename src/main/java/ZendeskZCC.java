@@ -123,9 +123,9 @@ public class ZendeskZCC {
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to Zendesk Ticket Viewer!\n");
 
-        final URL props = ClassLoader.getSystemResource("creds.properties");
         try {
-            PROPERTIES.load(props.openStream());
+            PROPERTIES = new Properties();
+            PROPERTIES.load(ZendeskZCC.class.getResourceAsStream("creds.properties"));
         } catch (Exception ex) {
             System.out.println(ex);
         }

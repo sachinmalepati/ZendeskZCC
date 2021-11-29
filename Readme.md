@@ -8,6 +8,6 @@ Step 2: mvn install -Dmaven.test.skip=true
 
 Step 3: mvn exec:java
 
-###Junit coverage
+### Junit coverage
 
 89% unit coverage achieved.

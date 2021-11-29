@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class ZendeskZCC {
 
-    private static Properties PROPERTIES;
+    public static Properties PROPERTIES = new Properties();
 
     static String initURl = "https://zccsachin.zendesk.com/api/v2/tickets.json?per_page=25";
     static String ticketURl = "https://zccsachin.zendesk.com/api/v2/tickets/";
@@ -102,7 +102,7 @@ public class ZendeskZCC {
         return null;
     }
 
-    private static TicketsWrapper parseJson(JSONObject json) throws JSONException {
+    public static TicketsWrapper parseJson(JSONObject json) throws JSONException {
         ArrayList<Ticket> listdata = new ArrayList<>();
         JSONArray jArray = (JSONArray)json.get("tickets");
         if (jArray != null) {
@@ -114,7 +114,7 @@ public class ZendeskZCC {
         return ticketsWrapper;
     }
 
-    private static Ticket getTicketObj(String jsonString) throws JSONException {
+    public static Ticket getTicketObj(String jsonString) throws JSONException {
         JSONObject jsonObject = getJson(jsonString);
 
         return new Ticket(jsonObject.get("created_at"), jsonObject.get("description"), jsonObject.get("id"), jsonObject.get("priority"), jsonObject.get("status"), jsonObject.get("subject"), jsonObject.get("type"));
@@ -123,7 +123,6 @@ public class ZendeskZCC {
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to Zendesk Ticket Viewer!\n");
 
-        PROPERTIES = new Properties();
         final URL props = ClassLoader.getSystemResource("creds.properties");
         try {
             PROPERTIES.load(props.openStream());
@@ -153,7 +152,7 @@ public class ZendeskZCC {
         }
     }
 
-    private static void getTicketDetails() throws Exception {
+    public static void getTicketDetails() throws Exception {
         System.out.println("\nEnter ticket ID");
 
         Scanner scanner = new Scanner(System.in);
@@ -172,7 +171,7 @@ public class ZendeskZCC {
         }
     }
 
-    private static void getNextPage() throws Exception {
+    public static void getNextPage() throws Exception {
         if(next_page.trim().equals("")){
             if(previous_page.trim().equals("")){
                 System.out.println("No tickets have been fetched yet.");
@@ -184,7 +183,7 @@ public class ZendeskZCC {
         }
     }
 
-    private static void getPrevPage() throws Exception {
+    public static void getPrevPage() throws Exception {
         if(previous_page.trim().equals("")){
             if(next_page.trim().equals("")){
                 System.out.println("No tickets have been fetched yet.");
@@ -196,7 +195,7 @@ public class ZendeskZCC {
         }
     }
 
-    private static void getAllTickets(String url) throws Exception {
+    public static void getAllTickets(String url) throws Exception {
         TicketsWrapper ticketsWrapper = getTickets(url);
 
         if(ticketsWrapper!=null){
@@ -209,7 +208,7 @@ public class ZendeskZCC {
         }
     }
 
-    private static void printTickets(ArrayList<Ticket> listOfTickets) {
+    public static void printTickets(ArrayList<Ticket> listOfTickets) {
         for(Ticket t: listOfTickets){
             System.out.println("\nTicket ID: "+t.id);
             System.out.println("Priority: "+t.priority);

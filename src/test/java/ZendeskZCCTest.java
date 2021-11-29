@@ -20,7 +20,7 @@ import java.util.Properties;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ URL.class, HttpsURLConnection.class, ZendeskZCC.class })
-//@PowerMockIgnore({"javax.net.ssl.*"})
+@PowerMockIgnore("jdk.internal.reflect.*")
 public class ZendeskZCCTest extends TestCase {
 
     public static String jsonString = "{\"name\":\"test\"}";
